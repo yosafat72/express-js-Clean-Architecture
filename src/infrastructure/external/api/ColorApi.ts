@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { network } from '../../config/AxiosConfig';
 export class ColorApi{
 
@@ -7,7 +6,6 @@ export class ColorApi{
             url: 'api/unknown',
             data: {},  
         });
-        // const response = await axios.get('https://reqres.in/api/unknown');
         return response.data
     }
     
