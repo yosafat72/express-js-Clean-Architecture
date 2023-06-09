@@ -26,7 +26,19 @@ export class UserService {
         }
     }
 
-    public createUser(userData: any): User {
-        return this.userRepository.createUser(userData);
+    public async createUser(userData: any): Promise<GenericResponse<User>> {
+        try {
+            const result = await this.userRepository.createUser(userData);
+            return{
+                success: true,
+                message: 'Success to saving data',
+                data: result
+            }
+        } catch (error) {
+            return {
+                success: false,
+                message: 'Failed to saving data',
+            };
+        }
       }
 }

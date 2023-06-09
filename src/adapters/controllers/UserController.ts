@@ -18,11 +18,16 @@ export class UserController{
         }
     }
 
-    public createUser(req: Request, res: Response): void {
+    public async createUser(req: Request, res: Response): Promise<void> {
         const userData = req.body;
-        const newUser = this.userService.createUser(userData);
 
-        res.status(201).json(newUser);
+        const newUser = await this.userService.createUser(userData);
+
+        if (newUser) {
+            res.status(200).json(newUser);
+        } else {
+            res.status(500).json({ error: 'Internal server error' });
+        }
     }
 
 }

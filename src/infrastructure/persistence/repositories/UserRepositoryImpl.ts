@@ -24,13 +24,17 @@ export class UserRepositoryImpl implements UserRepository{
         return transformedData
     }
 
-    createUser(userData: any): User {
-        const user: User = {
-            id: 1,
-            name: "yosafat",
-            email: "example@mail.com"
-        }
-        return user;
+    async createUser(userData: any): Promise<User> {
+        const newUserData = UserMapper.toPersistence(userData);
+
+        const result = await this.prisma.users.create({
+            data: {
+                "name" : newUserData.name,
+                "email" : newUserData.email
+            }
+        })
+
+        return UserMapper.toDomain(result);
     }
     
 }

@@ -14,8 +14,9 @@ export class UserRepositoryAdapter implements UserRepository{
         return await this.userRepository.getUsers();
     }
 
-    createUser(userData: any): User {
-        return this.userRepository.createUser(userData);
+    async createUser(userData: any): Promise<User>  {
+        const io = await this.userRepository.createUser(userData);
+        return io
     }
 
     
