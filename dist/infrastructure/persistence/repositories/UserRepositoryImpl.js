@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserRepositoryImpl = void 0;
 const client_1 = require("@prisma/client");
+const UserMapper_1 = require("../mapper/UserMapper");
 class UserRepositoryImpl {
     constructor() {
         this.prisma = new client_1.PrismaClient();
@@ -20,11 +21,7 @@ class UserRepositoryImpl {
             const users = yield this.prisma.users.findMany();
             const transformedData = users.map((sourceItem) => {
                 const { id, name, email } = sourceItem;
-                const destinationItem = {
-                    id: id,
-                    name: name,
-                    email: email
-                };
+                const destinationItem = UserMapper_1.UserMapper.toDomain(sourceItem);
                 return destinationItem;
             });
             return transformedData;
