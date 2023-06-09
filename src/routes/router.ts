@@ -13,6 +13,6 @@ router.get('/users', userController.getUser.bind(userController));
 router.post('/users', validateUserInput, userController.createUser.bind(userController))
 
 //Color -> from api
-router.get('/color', colorController.getColor.bind(colorController));
+router.get('/colors', colorController.getColor.bind(colorController));
 
 export default router;

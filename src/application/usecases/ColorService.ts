@@ -1,23 +1,37 @@
-import { ColorRepositoryAdapter } from "../../adapters/repositories/ColorRepositoryAdapter";
 import { Color } from "../../domain/models/Color";
-import { ColorRepository } from "../../domain/repositories/ColorRepository";
+import { ColorApi } from "../../infrastructure/external/api/ColorApi";
 import { GenericResponse } from "../responses/GenericResponse";
 
 export class ColorService{
 
-    private colorRepository: ColorRepository;
+    private colorApi: ColorApi;
 
     constructor(){
-        this.colorRepository = new ColorRepositoryAdapter();
+        this.colorApi = new ColorApi();
     }
 
     public async getColors() : Promise<GenericResponse<Color[]>>{
         try {
-            const result = await this.colorRepository.getColor();
+            const result = await this.colorApi.getColor();
+
+            const transformedData: Color[] = result.data.map((sourceItem: { id: any; name: any; year: any; color: any; pantone_value: any; }) => {
+                
+                const destinationItem: Color = {
+                    id: sourceItem.id,
+                    name: sourceItem.name,
+                    year: sourceItem.year,
+                    color: sourceItem.color,
+                    pantoneValue: sourceItem.pantone_value
+                };
+                
+                    return destinationItem;
+                });
+
+
             return{
                 success: true,
                 message: 'Success to get colors.',
-                data: result
+                data: transformedData
             }
         } catch (error) {
             return {
