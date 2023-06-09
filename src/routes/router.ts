@@ -1,4 +1,4 @@
-import express, { Request, Response, Router } from 'express';
+import express, { Router } from 'express';
 import { UserController } from '../adapters/controllers/UserController';
 import { validateUserInput } from '../adapters/middlewares/validation/UserValidation';
 
