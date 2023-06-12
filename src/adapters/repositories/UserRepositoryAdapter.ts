@@ -10,6 +10,9 @@ export class UserRepositoryAdapter implements UserRepository{
     constructor(){
         this.userRepository = new UserRepositoryImpl();
     }
+    saveUser(userData: any): Observable<User> {
+        return this.userRepository.saveUser(userData);
+    }
     fetchUsers(): Observable<User[]> {
         return this.userRepository.fetchUsers();
     }

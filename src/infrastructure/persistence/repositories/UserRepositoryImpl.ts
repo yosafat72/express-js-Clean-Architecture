@@ -12,6 +12,21 @@ export class UserRepositoryImpl implements UserRepository{
         this.prisma = new PrismaClient();
     }
 
+    saveUser(userData: any): Observable<User> {
+
+        const newUserData = UserMapper.toPersistence(userData);
+
+        const result = from(this.prisma.users.create({
+            data: {
+                "name" : newUserData.name,
+                "email" : newUserData.email
+            }
+        }))
+
+        return result;
+
+    }
+
     fetchUsers(): Observable<User[]> {
         const users = this.prisma.users.findMany();
         return from(users);

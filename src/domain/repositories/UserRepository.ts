@@ -6,5 +6,6 @@ export interface UserRepository {
     getUsers(): Promise<User[]>
     createUser(userData: any): Promise<User>
     fetchUsers(): Observable<User[]>
+    saveUser(userData: any): Observable<User>
 
 }

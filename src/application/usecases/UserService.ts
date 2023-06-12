@@ -12,13 +12,42 @@ export class UserService {
         this.userRepository = new UserRepositoryAdapter();
     }
 
+    public saveUser(userData: any): Observable<GenericResponse<User>>{
+        return new Observable<GenericResponse<User>>(subscribe => {
+            const result = this.userRepository.saveUser(userData);
+            result.pipe(
+                map((user: User) => {
+                    return {
+                        id: user.id,
+                        name: user.name,
+                        email: user.email
+                    };
+                })
+            ).subscribe({
+                next: (data) => {
+                    return subscribe.next(createResponse(true, 'Success to saving data', data));
+                },
+                error: (error) => {
+                    return subscribe.error(createResponse(false, 'Failed to saving data', error))
+                },
+                complete: () => {
+                    return subscribe.complete();
+                }
+            })
+        })
+    }
+
     public fetchUsers(): Observable<GenericResponse<User[]>>{
         return new Observable<GenericResponse<User[]>>(subscribe => {
             const result = this.userRepository.fetchUsers();
             result.pipe(
                 map((users: User[]) => {
                     return users.map((user: User) => {
-                        return UserMapper.toDomain(user);
+                        return {
+                            id: user.id,
+                            name: user.name,
+                            email: user.email
+                        }
                     })
                 })
             ).subscribe({

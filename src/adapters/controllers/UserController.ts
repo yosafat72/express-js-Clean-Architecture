@@ -9,6 +9,21 @@ export class UserController{
         this.userService = new UserService();
     }
 
+    public saveUser(req: Request, res: Response) : void{
+        const result = this.userService.saveUser(req.body);
+        result.subscribe({
+            next: (data) => {
+                data ? res.status(200).json(data) : res.status(404).json({ error: 'Failed to saving data' });
+            },
+            error: (_error) => {
+                res.status(404).json({ error: 'Failed to saving data' });
+            },
+            complete: () => {
+
+            }
+        });
+    }
+
     public fetchUser(req: Request, res: Response) : void{
         const result = this.userService.fetchUsers();
         result.subscribe({
