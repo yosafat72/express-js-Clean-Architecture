@@ -1,8 +1,9 @@
-import { Observable } from "rxjs";
+import { Observable, map } from "rxjs";
 import { UserRepositoryAdapter } from "../../adapters/repositories/UserRepositoryAdapter";
 import { User } from "../../domain/models/User";
 import { UserRepository } from "../../domain/repositories/UserRepository";
-import { GenericResponse } from "../responses/GenericResponse";
+import { GenericResponse, createResponse } from "../responses/GenericResponse";
+import { UserMapper } from "../../infrastructure/persistence/mapper/UserMapper";
 
 export class UserService {
     private userRepository: UserRepository;
@@ -11,13 +12,27 @@ export class UserService {
         this.userRepository = new UserRepositoryAdapter();
     }
 
-    public fetchUsers(): Observable<User[]>{
-        try {
+    public fetchUsers(): Observable<GenericResponse<User[]>>{
+        return new Observable<GenericResponse<User[]>>(subscribe => {
             const result = this.userRepository.fetchUsers();
-            return result
-        } catch (error) {
-            return new Observable<User[]>
-        }
+            result.pipe(
+                map((users: User[]) => {
+                    return users.map((user: User) => {
+                        return UserMapper.toDomain(user);
+                    })
+                })
+            ).subscribe({
+                next: (data) => {
+                    return subscribe.next(createResponse(true, 'Success to get users.', data));
+                },
+                error: (error) => {
+                    return subscribe.error(createResponse(false, 'Failed to get users.', error))
+                },
+                complete: () => {
+                    return subscribe.complete();
+                }
+            });
+        })
     }
 
     public async getUsers(): Promise<GenericResponse<User[]>>{

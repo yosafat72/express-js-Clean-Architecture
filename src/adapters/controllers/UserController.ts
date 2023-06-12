@@ -13,9 +13,9 @@ export class UserController{
         const result = this.userService.fetchUsers();
         result.subscribe({
             next: (data) => {
-                data ? res.status(200).json(createResponse(true, 'Success to get users.', data)) : res.status(404).json({ error: 'User not found' });
+                data ? res.status(200).json(data) : res.status(404).json({ error: 'User not found' });
             },
-            error: (error) => {
+            error: (_error) => {
                 res.status(404).json({ error: 'User not found' });
             },
             complete: () => {
