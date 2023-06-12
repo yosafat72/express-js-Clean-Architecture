@@ -11,6 +11,7 @@ const colorController = new ColorController();
 //User -> from database
 router.get('/users', userController.getUser.bind(userController));
 router.post('/users', validateUserInput, userController.createUser.bind(userController))
+router.get('/rx/users', userController.fetchUser.bind(userController));
 
 //Color -> from api
 router.get('/colors', colorController.getColor.bind(colorController));

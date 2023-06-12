@@ -2,6 +2,7 @@ import { User } from "../../../domain/models/User";
 import { UserRepository } from "../../../domain/repositories/UserRepository";
 import { PrismaClient, users } from "@prisma/client";
 import { UserMapper } from "../mapper/UserMapper";
+import { Observable, from } from "rxjs";
 
 export class UserRepositoryImpl implements UserRepository{
 
@@ -9,6 +10,11 @@ export class UserRepositoryImpl implements UserRepository{
 
     constructor(){
         this.prisma = new PrismaClient();
+    }
+
+    fetchUsers(): Observable<User[]> {
+        const users = this.prisma.users.findMany();
+        return from(users);
     }
 
     async getUsers(): Promise<User[]> {

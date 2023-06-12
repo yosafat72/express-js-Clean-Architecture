@@ -1,3 +1,4 @@
+import { Observable } from "rxjs";
 import { UserRepositoryAdapter } from "../../adapters/repositories/UserRepositoryAdapter";
 import { User } from "../../domain/models/User";
 import { UserRepository } from "../../domain/repositories/UserRepository";
@@ -8,6 +9,15 @@ export class UserService {
 
     constructor(){
         this.userRepository = new UserRepositoryAdapter();
+    }
+
+    public fetchUsers(): Observable<User[]>{
+        try {
+            const result = this.userRepository.fetchUsers();
+            return result
+        } catch (error) {
+            return new Observable<User[]>
+        }
     }
 
     public async getUsers(): Promise<GenericResponse<User[]>>{

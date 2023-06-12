@@ -1,11 +1,27 @@
+import { GenericResponse, createResponse } from './../../application/responses/GenericResponse';
 import { Request, Response } from 'express';
 import { UserService } from '../../application/usecases/UserService';
-
+import { User } from '../../domain/models/User';
 export class UserController{
     private userService: UserService;
 
     constructor(){
         this.userService = new UserService();
+    }
+
+    public fetchUser(req: Request, res: Response) : void{
+        const result = this.userService.fetchUsers();
+        result.subscribe({
+            next: (data) => {
+                data ? res.status(200).json(createResponse(true, 'Success to get users.', data)) : res.status(404).json({ error: 'User not found' });
+            },
+            error: (error) => {
+                res.status(404).json({ error: 'User not found' });
+            },
+            complete: () => {
+
+            }
+        });
     }
 
     public async getUser(req: Request, res: Response): Promise<void> {
