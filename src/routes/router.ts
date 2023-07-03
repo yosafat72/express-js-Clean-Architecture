@@ -1,7 +1,7 @@
-import { ColorController } from './../adapters/controllers/ColorController';
+import { ColorController } from '../presentation/controllers/ColorController';
 import express, { Router } from 'express';
-import { UserController } from '../adapters/controllers/UserController';
-import { validateUserInput } from '../adapters/middlewares/validation/UserValidation';
+import { UserController } from '../presentation/controllers/UserController';
+import { validateUserInput } from '../presentation/middlewares/validation/UserValidation';
 
 const router: Router = express.Router();
 
