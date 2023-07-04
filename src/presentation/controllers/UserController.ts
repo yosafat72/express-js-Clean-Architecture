@@ -1,15 +1,20 @@
 import { Request, Response } from 'express';
-import { UserService } from '../../application/usecases/UserService';
+import { GetUsersUsecase } from '../../domain/usecase/user/GetUsersUsecase';
+import { GetUsersUsecaseImpl } from '../../application/usecases/user/GetUsersUsecaseImpl';
+import { CreateUserUsecase } from '../../domain/usecase/user/CreateUserUsecase';
+import { CreateUserUsecaseImpl } from '../../application/usecases/user/CreateUserUsecaseImpl';
 
 export class UserController{
-    private userService: UserService;
+    private getUsersUsecase : GetUsersUsecase
+    private createUserUsecase : CreateUserUsecase
 
     constructor(){
-        this.userService = new UserService();
+        this.getUsersUsecase = new GetUsersUsecaseImpl()
+        this.createUserUsecase = new CreateUserUsecaseImpl()
     }
 
     public async getUser(req: Request, res: Response): Promise<void> {
-        const user = await this.userService.getUsers();
+        const user = await this.getUsersUsecase.execute()
 
         if (user) {
             res.status(200).json(user);
@@ -21,7 +26,7 @@ export class UserController{
     public async createUser(req: Request, res: Response): Promise<void> {
         const userData = req.body;
 
-        const newUser = await this.userService.createUser(userData);
+        const newUser = await this.createUserUsecase.execute(userData)
 
         if (newUser) {
             res.status(200).json(newUser);
