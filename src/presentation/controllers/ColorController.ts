@@ -10,8 +10,8 @@ export class ColorController{
     }
 
     public async getColor(req: Request, res: Response) : Promise<void> {
-
-        const color = await this.colorService.getColors();
+        
+        const color = await this.colorService.getColors(req.body.dateStart, req.body.dateEnd);
 
         if (color) {
             res.status(200).json(color);

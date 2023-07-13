@@ -1,5 +1,5 @@
 import _ from "./main";
 
-_.app.listen(3000, () => {
-    console.log('Server started on port 3000');
+_.app.listen(3001, () => {
+    console.log('Server started on port 3001');
 });

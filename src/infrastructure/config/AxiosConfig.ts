@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const network = axios.create({
-    baseURL: "https://reqres.in/",
+    baseURL: "http://localhost:3000",
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
